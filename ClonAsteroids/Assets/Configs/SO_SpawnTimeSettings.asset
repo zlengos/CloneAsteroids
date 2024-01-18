@@ -52,3 +52,18 @@ MonoBehaviour:
   - name: Asteroid
     time: 8
     isSpawned: 0
+  - name: Asteroid
+    time: 10
+    isSpawned: 0
+  - name: Asteroid
+    time: 12
+    isSpawned: 0
+  - name: Asteroid
+    time: 15
+    isSpawned: 0
+  - name: Asteroid
+    time: 17
+    isSpawned: 0
+  - name: Asteroid
+    time: 20
+    isSpawned: 0
