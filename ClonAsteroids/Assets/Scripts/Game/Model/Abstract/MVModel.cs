@@ -4,6 +4,7 @@ namespace Game.Model.Abstract
 {
     public abstract class MVModel
     {
+        #region Fields
         private Vector2 _position;
 
         public Vector2 Position
@@ -14,20 +15,16 @@ namespace Game.Model.Abstract
 
         public float Rotation { get; private set; }
 
-        public MVModel(Vector2 position, float rotation)
+        #endregion
+
+        protected MVModel(Vector2 position, float rotation)
         {
             Position = position;
             Rotation = rotation;
         }
 
-        public void SetPosition(Vector2 newPosition)
-        {
-            Position = newPosition;
-        }
+        public void SetPosition(Vector2 newPosition) => Position = newPosition;
 
-        public void Rotate(float delta)
-        {
-            Rotation = Mathf.Repeat(Rotation + delta, 360);
-        }
+        public void Rotate(float delta) => Rotation = Mathf.Repeat(Rotation + delta, 360);
     }
 }

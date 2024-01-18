@@ -2,30 +2,28 @@
  using Game.Model.Abstract;
  using Game.Model.Enemies;
  using UnityEngine;
- using Random = UnityEngine.Random;
 
  namespace Game.View
 {
     public class EnemyFactory : ObjectsFactory<Updatable>
     {
+        #region Fields
+
         [SerializeField] private View asteroid;
         [SerializeField] private View miniAsteroid;
         [SerializeField] private View ufo;
 
+        #endregion
 
         protected override View GetView(Updatable model)
         {
-            switch (model)
+            return model switch
             {
-                case MiniAsteroid:
-                    return miniAsteroid;
-                case Asteroid:
-                    return asteroid;
-                case UFO:
-                    return ufo;
-                default:
-                    throw new InvalidOperationException();
-            }
+                MiniAsteroid => miniAsteroid,
+                Asteroid => asteroid,
+                UFO => ufo,
+                _ => throw new InvalidOperationException()
+            };
         }
 
     }

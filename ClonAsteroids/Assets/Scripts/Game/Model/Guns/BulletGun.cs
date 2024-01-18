@@ -17,7 +17,6 @@ namespace Game.Model.Guns
             Bullets = bullets;
             MaxBullets = bullets;
             BulletsPerShot = bulletsPerShot;
-            // Projectile = new Projectile();
 
             GunCooldownTime = gunCooldownTime;
         }

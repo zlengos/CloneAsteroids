@@ -1,34 +1,37 @@
 using System.Collections.Generic;
+using Game.Input;
+using Game.Model;
 using Game.Model.Abstract;
 using Game.Model.Guns;
 using Game.Model.ShipPlayer;
 using Game.View;
+using Game.Views;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Composite
 {
     public class ShipComposition : CompositeRoot
     {
+        #region Fields
+
         [SerializeField] private View.View ship;
         [SerializeField] private ProjectileFactory projectileFactory;
-        // [SerializeField] private Camera _camera;
+        [SerializeField] private GameEndUI gameEndUI;
 
         private Ship _shipModel;
         private ShipInputController _shipInputController;
         private MovementPlayer _movementPlayer;
         private BulletGun _bulletGun;
         private LaserGun _laserGun;
+        private int _gameScore;
 
-        private List<ObjectsFactory<Projectile>.ViewEntity> _listOfBullets = new();
-        // private BulletsSimulation _bulletsSimulation;
-        // private LaserGunRollback _laserGunRollback;
+        private readonly List<ObjectsFactory<Projectile>.ViewEntity> _listOfBullets = new();
 
         public Ship Model => _shipModel;
-        // public BulletsSimulation Bullets => _bulletsSimulation;
         public float Speed => _shipInputController.Speed;
         public LaserGun LaserGun => _laserGun;
-        // public LaserGunRollback LaserGunRollback => _laserGunRollback;
+
+        #endregion
 
         public override void Compose()
         {
@@ -42,16 +45,16 @@ namespace Game.Composite
             _shipInputController = new ShipInputController(_movementPlayer, _shipModel)
                 .BindGunToFirstSlot(_bulletGun)
                 .BindGunToSecondSlot(_laserGun);
-
-
-            // _bulletsSimulation = new BulletsSimulation();
-            // _laserGunRollback = new LaserGunRollback(_laserGun, Config.LaserCooldown);
         }
 
-        // public void DisableShip()
-        // {
-        //     _shipInputRouter.OnDisable();
-        // }
+        private void DisableShip()
+        {
+            _shipInputController.OnDisable();
+
+            gameEndUI.ShowEndGame(_gameScore);
+        }
+
+        private void AddScore() => _gameScore++;
 
         private void OnEnable()
         {
@@ -60,8 +63,10 @@ namespace Game.Composite
             _shipInputController.OnShoot += OnShot;
 
             projectileFactory.OnSpawned += AddNewView;
-            // _bulletsSimulation.Start += _bulletsViewFactory.Create;
-            // _bulletsSimulation.End += _bulletsViewFactory.Destroy;
+
+            CollisionChecker.GameEnd += DisableShip;
+
+            CollisionChecker.OnScoreIncrease += AddScore;
         }
 
         private void OnDisable()
@@ -72,21 +77,19 @@ namespace Game.Composite
             
             projectileFactory.OnSpawned -= AddNewView;
             
-            // _bulletsSimulation.Start -= _bulletsViewFactory.Create;
-            // _bulletsSimulation.End -= _bulletsViewFactory.Destroy;
+            CollisionChecker.GameEnd -= DisableShip;
+            
+            CollisionChecker.OnScoreIncrease -= AddScore;
         }
 
         private void Update()
         {
             _shipInputController.Update();
 
+            _laserGun.Update(Time.deltaTime);
             
             foreach (var bullet in _listOfBullets)
-            {
                 bullet.Entity.Update(Time.deltaTime);
-            }
-            // _bulletsSimulation.Update(Time.deltaTime);
-            // _laserGunRollback.Tick(Time.deltaTime);
         }
 
         private void OnShot(Gun gun)
@@ -97,9 +100,7 @@ namespace Game.Composite
             projectileFactory.Spawn(projectile);
         }
 
-        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, View.View view)
-        {
+        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, View.View view) => 
             _listOfBullets.Add(viewEntity);
-        }
     }
 }

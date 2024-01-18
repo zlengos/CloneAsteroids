@@ -9,13 +9,17 @@ namespace Game.Model
 {
     public class EnemySpawner
     {
+        #region Fields
+
         private readonly SpeedConfig _speedConfig;
         private readonly SpawnConfig _spawnConfig;
         private readonly EnemyFactory _enemyFactory;
         private readonly View.View _player;
 
         private float _elapsedTime = 0f;
-
+        
+        #endregion
+        
         public EnemySpawner(SpeedConfig speedConfig, SpawnConfig spawnConfig, EnemyFactory enemyFactory, View.View playerModel)
         {
             _speedConfig = speedConfig;
@@ -35,7 +39,7 @@ namespace Game.Model
                 if (_elapsedTime >= spawnTime && !enemyObject.IsSpawned)
                 {
                     SpawnEnemy();
-                    enemyObject.SetSpawned();
+                    enemyObject.SetSpawned(true);
                 }
             }
         }
@@ -65,7 +69,7 @@ namespace Game.Model
             switch (random)
             {
                 case 0:
-                    Asteroid asteroid = new Asteroid(position, direction, speedConfig.GetSpeedByName("Asteroid"));
+                    Asteroid asteroid = new Asteroid(position, direction, speedConfig.GetSpeedByName("Asteroid"), 4);
                     return asteroid;
                 case 1:
                     UFO ufo = new UFO(_player.Model, direction, speedConfig.GetSpeedByName("UFO"));
@@ -73,6 +77,12 @@ namespace Game.Model
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void SpawnMiniAsteroid(MiniAsteroid miniAsteroid)
+        {
+            var enemyEntity = new ObjectsFactory<Updatable>.ViewEntity(miniAsteroid, miniAsteroid);
+            _enemyFactory.Spawn(enemyEntity);
         }
     }
 }

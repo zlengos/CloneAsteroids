@@ -1,7 +1,6 @@
 using System;
-using System.Numerics;
 using Game.Model.Abstract;
-using Vector2 = UnityEngine.Vector2;
+using UnityEngine;
 
 namespace Game.Model.Guns
 {
@@ -26,7 +25,6 @@ namespace Game.Model.Guns
         {
             base.Shoot(position, direction);
             Projectile = new Projectile(position, direction, 0.001f, .5f, "laser");
-
         }
     }
 }

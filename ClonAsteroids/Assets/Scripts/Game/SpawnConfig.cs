@@ -28,7 +28,7 @@ namespace Game
             public float TimeSinceStart => time;
             public bool IsSpawned => isSpawned;
 
-            public void SetSpawned() => isSpawned = true;
+            public void SetSpawned(bool toggle) => isSpawned = toggle;
         }
     }
 }

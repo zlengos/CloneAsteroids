@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using Game.Model.Guns;
 using UnityEngine;
 
 namespace Game.Model.Abstract
 {
     public class Gun
     {
+        #region Fields
+        
         protected int MaxBullets;
+        public int Bullets { get; protected set; }
 
-        public int Bullets;
-
-        public float CooldownTime { get; protected set; }
+        public float CooldownTime { get; private set; }
         public float GunCooldownTime { get; protected set; }
 
         protected int BulletsPerShot;
         public Projectile Projectile  { get; protected set; }
+        
+        #endregion
 
         public virtual bool CanShoot() => Bullets >= BulletsPerShot;
 
         public virtual void Shoot(Vector2 position, Vector2 direction)
         {
             if (CanShoot())
-            {
                 Bullets -= BulletsPerShot;
-                
-            }
         }
 
         protected virtual void TryAddBullet()
@@ -43,11 +40,11 @@ namespace Game.Model.Abstract
 
             CooldownTime += deltaTime;
 
-            if (CooldownTime >= GunCooldownTime)
-            {
-                TryAddBullet();
-                CooldownTime = 0;
-            }
+            if (!(CooldownTime >= GunCooldownTime)) 
+                return;
+            
+            TryAddBullet();
+            CooldownTime = 0;
         }
 
     }

@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Game.Model;
 using Game.Model.Abstract;
+using Game.Model.Enemies;
 using Game.View;
 using UnityEngine;
 
@@ -9,46 +9,62 @@ namespace Game.Composite
 {
     public class EnemiesComposition : CompositeRoot
     {
-        [SerializeField] private EnemyFactory _enemyFactory;
-        [SerializeField] private ShipComposition _ship;
-        [SerializeField] private SpeedConfig _speedConfig;
-        [SerializeField] private SpawnConfig _spawnConfig;
-        
+        #region Fields
+
+        [SerializeField] private EnemyFactory enemyFactory;
+        [SerializeField] private SpeedConfig speedConfig;
+        [SerializeField] private SpawnConfig spawnConfig;
         [SerializeField] private View.View player;
 
-        private List<ObjectsFactory<Updatable>.ViewEntity> _listOfEnemies = new();
+        private readonly List<ObjectsFactory<Updatable>.ViewEntity> _listOfEnemies = new();
 
-        
-        private EnemySpawner _spawner = null;
+        private EnemySpawner _enemySpawner = null;
 
+        #endregion
 
         private void OnEnable()
         {
-            _enemyFactory.OnSpawned += AddNewView;        
+            enemyFactory.OnSpawned += AddNewView;
+            
+            CollisionChecker.OnAsteroidDestroyed += SpawnAsteroidParts;
         }
+
+        private void SpawnAsteroidParts(Asteroid asteroid)
+        {
+            if (asteroid.CountOfParts <= 0) 
+                return;
+            
+            for (int i = 0; i < asteroid.CountOfParts; i++)
+                _enemySpawner.SpawnMiniAsteroid(asteroid.CreatePart());
+        }
+
         private void OnDisable()
         {
-            _enemyFactory.OnSpawned -= AddNewView;        
+            enemyFactory.OnSpawned -= AddNewView;
+
+            CollisionChecker.OnAsteroidDestroyed -= SpawnAsteroidParts;
+
+            ClearSpawned();
         }
 
-        private void AddNewView(ObjectsFactory<Updatable>.ViewEntity arg1, View.View arg2)
+        private void AddNewView(ObjectsFactory<Updatable>.ViewEntity viewEntity, View.View view) =>
+            _listOfEnemies.Add(viewEntity);
+
+        public override void Compose() =>
+            _enemySpawner = new EnemySpawner(speedConfig, spawnConfig, enemyFactory, player);
+
+        private void Update()
         {
-            _listOfEnemies.Add(arg1);
+            _enemySpawner.Update(Time.deltaTime);
+
+            foreach (var enemy in _listOfEnemies)
+                enemy.Entity.Update(Time.deltaTime);
         }
 
-        public override void Compose()
+        private void ClearSpawned()
         {
-            _spawner = new EnemySpawner(_speedConfig, _spawnConfig, _enemyFactory, player);
-        }
-
-        private void LateUpdate()
-        {
-            _spawner.Update(Time.deltaTime);
-            
-            foreach (var bullet in _listOfEnemies)
-            {
-                bullet.Entity.Update(Time.deltaTime);
-            }
+            foreach (var spawnedObject in spawnConfig.playableObjects)
+                spawnedObject.SetSpawned(false);
         }
     }
 }
