@@ -1064,8 +1064,6 @@ GameObject:
   - component: {fileID: 1055680565}
   - component: {fileID: 1055680564}
   - component: {fileID: 1055680568}
-  - component: {fileID: 1055680567}
-  - component: {fileID: 1055680566}
   - component: {fileID: 1055680569}
   m_Layer: 0
   m_Name: ComposeRoot
@@ -1134,35 +1132,6 @@ MonoBehaviour:
   order:
   - {fileID: 1055680568}
   - {fileID: 1055680569}
---- !u!114 &1055680566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055680562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42bd4eb3bd0442b58a13a25da879162a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  asteroid: {fileID: 1152994452667248608, guid: 76f3cf897f7c28845a08a97477feece2, type: 3}
-  miniAsteroid: {fileID: 7901569910049721543, guid: 7b940db984d148f4d8cb9cdd3b7cb3ef, type: 3}
-  ufo: {fileID: 191780096221253158, guid: 313be84f87751534ba997b30572d1bcb, type: 3}
---- !u!114 &1055680567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055680562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f928b93ebcb641bd97f9b4c418009792, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletProjectile: {fileID: 4660802900975676882, guid: 0803f64b31201ad459735dae2098c5e2, type: 3}
-  laserProjectile: {fileID: 8844750765846937099, guid: 871128387f76ac64cbfca7100ecf301c, type: 3}
 --- !u!114 &1055680568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,8 +1145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ship: {fileID: 701180701}
-  projectileFactory: {fileID: 1055680567}
   gameEndUI: {fileID: 526821126}
+  bulletProjectile: {fileID: 4660802900975676882, guid: 0803f64b31201ad459735dae2098c5e2, type: 3}
+  laserProjectile: {fileID: 8844750765846937099, guid: 871128387f76ac64cbfca7100ecf301c, type: 3}
 --- !u!114 &1055680569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1190,11 +1160,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7dbbdebbceb4ba68675effb734e415a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyFactory: {fileID: 1055680566}
-  ship: {fileID: 1055680568}
   speedConfig: {fileID: 11400000, guid: 28ad32949c4b6114490c7e78e9b3ccee, type: 2}
   spawnConfig: {fileID: 11400000, guid: 8bfd171a1c1ebb5469d6544d410a415a, type: 2}
   player: {fileID: 701180701}
+  asteroid: {fileID: 1152994452667248608, guid: 76f3cf897f7c28845a08a97477feece2, type: 3}
+  miniAsteroid: {fileID: 7901569910049721543, guid: 7b940db984d148f4d8cb9cdd3b7cb3ef, type: 3}
+  ufo: {fileID: 191780096221253158, guid: 313be84f87751534ba997b30572d1bcb, type: 3}
 --- !u!1 &1175957386
 GameObject:
   m_ObjectHideFlags: 0
