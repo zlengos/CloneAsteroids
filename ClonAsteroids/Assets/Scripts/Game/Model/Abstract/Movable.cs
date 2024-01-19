@@ -6,7 +6,7 @@ namespace Game.Model.Abstract
     {
         #region Fields
 
-        protected Vector2 Direction;
+        private readonly Vector2 _direction;
         protected readonly float Speed;
 
         #endregion
@@ -14,13 +14,13 @@ namespace Game.Model.Abstract
         protected Movable(Vector2 position, float rotation, float speed, Vector2 direction) : base(position, rotation)
         {
             Speed = speed;
-            Direction = direction;
-            Rotate(Vector2.SignedAngle(Quaternion.Euler(0, 0, Rotation) * Vector3.up, Direction));
+            _direction = direction;
+            Rotate(Vector2.SignedAngle(Quaternion.Euler(0, 0, Rotation) * Vector3.up, _direction));
         }
 
         public override void Update(float deltaTime)
         {
-            Position += Direction * (Speed * deltaTime);
+            Position += _direction * (Speed * deltaTime);
         }
     }
 }

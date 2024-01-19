@@ -7,17 +7,16 @@ namespace Game.Model.Abstract
         #region Fields
         
         protected int MaxBullets;
+        protected int BulletsPerShot;
+        
         public int Bullets { get; protected set; }
-
         public float CooldownTime { get; private set; }
         public float GunCooldownTime { get; protected set; }
-
-        protected int BulletsPerShot;
         public Projectile Projectile  { get; protected set; }
         
         #endregion
 
-        public virtual bool CanShoot() => Bullets >= BulletsPerShot;
+        public bool CanShoot() => Bullets >= BulletsPerShot;
 
         public virtual void Shoot(Vector2 position, Vector2 direction)
         {
@@ -25,7 +24,7 @@ namespace Game.Model.Abstract
                 Bullets -= BulletsPerShot;
         }
 
-        protected virtual void TryAddBullet()
+        private void TryAddBullet()
         {
             if (Bullets + BulletsPerShot > MaxBullets)
                 return;

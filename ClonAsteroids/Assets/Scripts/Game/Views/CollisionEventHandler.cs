@@ -7,11 +7,11 @@ namespace Game.Views
     {
         #region Fields
 
-        [SerializeField] private View.View view;
+        [SerializeField] private View view;
         
         #endregion
 
         private void OnCollisionEnter2D(Collision2D other) => 
-            CollisionChecker.HandleCollision(view, other.gameObject.GetComponent<View.View>());
+            CollisionChecker.HandleCollision(view, other.gameObject.GetComponent<View>());
     }
 }

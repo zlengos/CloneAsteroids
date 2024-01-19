@@ -4,7 +4,6 @@ using Game.Model;
 using Game.Model.Abstract;
 using Game.Model.Guns;
 using Game.Model.ShipPlayer;
-using Game.View;
 using Game.Views;
 using UnityEngine;
 
@@ -14,37 +13,42 @@ namespace Game.Composite
     {
         #region Fields
 
-        [SerializeField] private View.View ship;
-        [SerializeField] private ProjectileFactory projectileFactory;
+        [SerializeField] private Views.View ship;
         [SerializeField] private GameEndUI gameEndUI;
+        
+        [SerializeField] private Views.View bulletProjectile, laserProjectile;
 
-        private Ship _shipModel;
         private ShipInputController _shipInputController;
         private MovementPlayer _movementPlayer;
         private BulletGun _bulletGun;
-        private LaserGun _laserGun;
+        private ProjectileFactory _projectileFactory;
+        
         private int _gameScore;
 
         private readonly List<ObjectsFactory<Projectile>.ViewEntity> _listOfBullets = new();
 
-        public Ship Model => _shipModel;
+        public Ship Model { get; private set; }
+
         public float Speed => _shipInputController.Speed;
-        public LaserGun LaserGun => _laserGun;
+        public LaserGun LaserGun { get; private set; }
 
         #endregion
 
         public override void Compose()
         {
             _bulletGun = new BulletGun();
-            _laserGun = new LaserGun();
-
-            _shipModel = new Ship(new Vector2(0.5f, 0.5f), 0);
-            ship.Initialize(_shipModel);
+            LaserGun = new LaserGun();
             
-            _movementPlayer = new MovementPlayer(_shipModel);
-            _shipInputController = new ShipInputController(_movementPlayer, _shipModel)
+            _projectileFactory = new ProjectileFactory();
+            _projectileFactory.InitializeViews(bulletProjectile, laserProjectile);
+
+            Model = new Ship(new Vector2(0.5f, 0.5f), 0);
+            ship.Initialize(Model);
+            
+            _movementPlayer = new MovementPlayer(Model);
+            _shipInputController = new ShipInputController(_movementPlayer, Model)
                 .BindGunToFirstSlot(_bulletGun)
-                .BindGunToSecondSlot(_laserGun);
+                .BindGunToSecondSlot(LaserGun);
         }
 
         private void DisableShip()
@@ -61,8 +65,9 @@ namespace Game.Composite
             _shipInputController.OnEnable();
 
             _shipInputController.OnShoot += OnShot;
+            
 
-            projectileFactory.OnSpawned += AddNewView;
+            _projectileFactory.OnSpawned += AddNewView;
 
             CollisionChecker.GameEnd += DisableShip;
 
@@ -75,7 +80,7 @@ namespace Game.Composite
 
             _shipInputController.OnShoot -= OnShot;
             
-            projectileFactory.OnSpawned -= AddNewView;
+            _projectileFactory.OnSpawned -= AddNewView;
             
             CollisionChecker.GameEnd -= DisableShip;
             
@@ -86,7 +91,7 @@ namespace Game.Composite
         {
             _shipInputController.Update();
 
-            _laserGun.Update(Time.deltaTime);
+            LaserGun.Update(Time.deltaTime);
             
             foreach (var bullet in _listOfBullets)
                 bullet.Entity.Update(Time.deltaTime);
@@ -94,13 +99,13 @@ namespace Game.Composite
 
         private void OnShot(Gun gun)
         {
-            gun.Shoot(_shipModel.Position, _movementPlayer.Front);
+            gun.Shoot(Model.Position, _movementPlayer.Front);
 
             ObjectsFactory<Projectile>.ViewEntity projectile = new(gun.Projectile, gun.Projectile);
-            projectileFactory.Spawn(projectile);
+            _projectileFactory.Spawn(projectile);
         }
 
-        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, View.View view) => 
+        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, Views.View view) => 
             _listOfBullets.Add(viewEntity);
     }
 }

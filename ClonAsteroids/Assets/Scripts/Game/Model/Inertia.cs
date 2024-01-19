@@ -6,9 +6,9 @@ namespace Game.Model
     {
         #region Fields
 
-        private readonly float _unitsPerSecond = 0.001f;
-        private readonly float _maxSpeed = 0.002f;
-        private readonly float _secondsUnilStop = 1f;
+        private const float UnitsPerSecond = 0.001f;
+        private const float MaxSpeed = 0.002f;
+        private const float SecondsUnilStop = 1f;
 
         public Vector2 Acceleration { get; private set; }
 
@@ -16,10 +16,10 @@ namespace Game.Model
 
         public void Accelerate(Vector2 forward, float deltaTime)
         {
-            Acceleration += forward * (_unitsPerSecond * deltaTime);
-            Acceleration = Vector2.ClampMagnitude(Acceleration, _maxSpeed);
+            Acceleration += forward * (UnitsPerSecond * deltaTime);
+            Acceleration = Vector2.ClampMagnitude(Acceleration, MaxSpeed);
         }
 
-        public void Slowdown(float deltaTime) => Acceleration -= Acceleration * (deltaTime / _secondsUnilStop);
+        public void Slowdown(float deltaTime) => Acceleration -= Acceleration * (deltaTime / SecondsUnilStop);
     }
 }

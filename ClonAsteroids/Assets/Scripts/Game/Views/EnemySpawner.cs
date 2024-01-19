@@ -1,7 +1,7 @@
 using System;
 using Game.Model.Abstract;
 using Game.Model.Enemies;
-using Game.View;
+using Game.Views;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -14,13 +14,13 @@ namespace Game.Model
         private readonly SpeedConfig _speedConfig;
         private readonly SpawnConfig _spawnConfig;
         private readonly EnemyFactory _enemyFactory;
-        private readonly View.View _player;
+        private readonly Views.View _player;
 
-        private float _elapsedTime = 0f;
+        private float _elapsedTime;
         
         #endregion
         
-        public EnemySpawner(SpeedConfig speedConfig, SpawnConfig spawnConfig, EnemyFactory enemyFactory, View.View playerModel)
+        public EnemySpawner(SpeedConfig speedConfig, SpawnConfig spawnConfig, EnemyFactory enemyFactory, Views.View playerModel)
         {
             _speedConfig = speedConfig;
             _spawnConfig = spawnConfig;
@@ -34,7 +34,7 @@ namespace Game.Model
 
             foreach (var enemyObject in _spawnConfig.playableObjects)
             {
-                float spawnTime = _spawnConfig.GetTimeByName(enemyObject.Name);
+                var spawnTime = _spawnConfig.GetTimeByName(enemyObject.Name);
 
                 if (_elapsedTime >= spawnTime && !enemyObject.IsSpawned)
                 {
@@ -50,7 +50,6 @@ namespace Game.Model
             var randomEnemy = GetRandomEnemy(_speedConfig, randomPosition, GetDirectionToScreen(randomPosition));
             var enemyEntity = new ObjectsFactory<Updatable>.ViewEntity(randomEnemy, randomEnemy);
             _enemyFactory.Spawn(enemyEntity);
-            // _elapsedTime = 0f;
         }
 
         private static Vector2 GetDirectionToScreen(Vector2 startPosition)
@@ -63,16 +62,16 @@ namespace Game.Model
             return Random.insideUnitCircle.normalized + new Vector2(0.5f, 0.5f);
         }
 
-        public Updatable GetRandomEnemy(SpeedConfig speedConfig, Vector2 position, Vector2 direction)
+        private Updatable GetRandomEnemy(SpeedConfig speedConfig, Vector2 position, Vector2 direction)
         {
-            int random = Random.Range(0, 2);
+            var random = Random.Range(0, 2);
             switch (random)
             {
                 case 0:
-                    Asteroid asteroid = new Asteroid(position, direction, speedConfig.GetSpeedByName("Asteroid"), 4);
+                    var asteroid = new Asteroid(position, direction, speedConfig.GetSpeedByName("Asteroid"), 4);
                     return asteroid;
                 case 1:
-                    UFO ufo = new UFO(_player.Model, direction, speedConfig.GetSpeedByName("UFO"));
+                    var ufo = new UFO(_player.Model, direction, speedConfig.GetSpeedByName("UFO"));
                     return ufo;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -27,7 +27,5 @@ namespace Game.Model.Enemies
         private void LookAt(Vector2 targetPosition) => Rotate(
             Vector2.SignedAngle(Quaternion.Euler(0, 0, Rotation) * Vector3.up,
             Position - targetPosition));
-        //legacy formula
-        //Mathf.Atan2(Mathf.Sin(Rotation * Mathf.Deg2Rad), Mathf.Cos(Rotation * Mathf.Deg2Rad)) * Mathf.Rad2Deg
     }
 }

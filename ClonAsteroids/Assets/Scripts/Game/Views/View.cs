@@ -1,7 +1,7 @@
 using Game.Model.Abstract;
 using UnityEngine;
 
-namespace Game.View
+namespace Game.Views
 {
     public class View : MonoBehaviour
     {

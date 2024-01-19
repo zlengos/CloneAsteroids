@@ -5,13 +5,8 @@ namespace Game.Model.Abstract
     public abstract class MVModel
     {
         #region Fields
-        private Vector2 _position;
 
-        public Vector2 Position
-        {
-            get => _position;
-            protected set => _position = value;
-        }
+        public Vector2 Position { get; protected set; }
 
         public float Rotation { get; private set; }
 

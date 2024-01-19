@@ -7,8 +7,8 @@ namespace Game.Model.ShipPlayer
         #region Fields
         
         private readonly Ship _ship;
-        private readonly float _angles = 180;
-        
+        private const float Angles = 180;
+
         public Vector2 Front => Quaternion.Euler(0, 0, _ship.Rotation) * Vector3.up;
 
         #endregion
@@ -24,7 +24,7 @@ namespace Game.Model.ShipPlayer
         {
             direction = direction > 0 ? 1 : -1;
 
-            _ship.Rotate(direction * deltaTime * _angles);
+            _ship.Rotate(direction * deltaTime * Angles);
         }
     }
 }

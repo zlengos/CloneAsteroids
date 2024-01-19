@@ -1,6 +1,5 @@
 using System;
 using Game.Model.Abstract;
-using Game.View;
 using UnityEngine;
 
 namespace Game.Views
@@ -9,8 +8,7 @@ namespace Game.Views
     {
         #region Fields
         
-        [SerializeField] private View.View bulletProjectile;
-        [SerializeField] private View.View laserProjectile;
+        private View _bulletProjectile, _laserProjectile;
         
         #endregion
 
@@ -19,15 +17,21 @@ namespace Game.Views
             base.Spawn(entity);
             
             if (entity.Entity is Projectile projectile)
-                Destroy(TempView.gameObject, projectile.Lifetime);
+                UnityEngine.Object.Destroy(TempView.gameObject, projectile.Lifetime);
         }
 
-        protected override View.View GetView(Projectile model)
+        public void InitializeViews(View bulletProjectileView, View laserProjectileView)
+        {
+            _bulletProjectile = bulletProjectileView;
+            _laserProjectile = laserProjectileView;
+        }
+
+        protected override View GetView(Projectile model)
         {
             return model.Name switch
             {
-                "laser" => laserProjectile,
-                "bullet" => bulletProjectile,
+                "laser" => _laserProjectile,
+                "bullet" => _bulletProjectile,
                 _ => throw new InvalidOperationException()
             };
         }
