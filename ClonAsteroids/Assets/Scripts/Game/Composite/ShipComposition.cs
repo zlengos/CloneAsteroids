@@ -6,6 +6,7 @@ using Game.Model.Guns;
 using Game.Model.ShipPlayer;
 using Game.Views;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Composite
 {
@@ -23,10 +24,9 @@ namespace Game.Composite
         private BulletGun _bulletGun;
         private ProjectileFactory _projectileFactory;
         
-        private int _gameScore;
-
         private readonly List<ObjectsFactory<Projectile>.ViewEntity> _listOfBullets = new();
 
+        private int GameScore { get; set; }
         public Ship Model { get; private set; }
 
         public float Speed => _shipInputController.Speed;
@@ -55,10 +55,11 @@ namespace Game.Composite
         {
             _shipInputController.OnDisable();
 
-            gameEndUI.ShowEndGame(_gameScore);
+            gameEndUI.ShowEndGame(GameScore);
         }
 
-        private void AddScore() => _gameScore++;
+        private void AddScore() 
+            => GameScore++;
 
         private void OnEnable()
         {
@@ -105,7 +106,7 @@ namespace Game.Composite
             _projectileFactory.Spawn(projectile);
         }
 
-        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, Views.View view) => 
-            _listOfBullets.Add(viewEntity);
+        private void AddNewView(ObjectsFactory<Projectile>.ViewEntity viewEntity, Views.View view)
+            => _listOfBullets.Add(viewEntity);
     }
 }

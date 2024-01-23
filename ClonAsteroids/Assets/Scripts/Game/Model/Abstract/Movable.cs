@@ -18,9 +18,7 @@ namespace Game.Model.Abstract
             Rotate(Vector2.SignedAngle(Quaternion.Euler(0, 0, Rotation) * Vector3.up, _direction));
         }
 
-        public override void Update(float deltaTime)
-        {
-            Position += _direction * (Speed * deltaTime);
-        }
+        public override void Update(float deltaTime) 
+            => Position += _direction * (Speed * deltaTime);
     }
 }

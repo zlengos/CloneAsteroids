@@ -11,7 +11,7 @@ namespace Game.Views
         
         #endregion
 
-        private void OnCollisionEnter2D(Collision2D other) => 
-            CollisionChecker.HandleCollision(view, other.gameObject.GetComponent<View>());
+        private void OnCollisionEnter2D(Collision2D other) 
+            => CollisionChecker.HandleCollision(view, other.gameObject.GetComponent<View>());
     }
 }

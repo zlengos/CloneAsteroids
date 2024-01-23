@@ -19,7 +19,6 @@ namespace Game.Views
             _ufo = ufoView;
         }
 
-
         protected override View GetView(Updatable model)
         {
             return model switch

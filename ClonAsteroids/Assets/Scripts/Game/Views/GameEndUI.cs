@@ -18,6 +18,7 @@ namespace Game.Views
             this.gameObject.SetActive(true);
         }
         
-        public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        public void RestartGame() 
+            => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

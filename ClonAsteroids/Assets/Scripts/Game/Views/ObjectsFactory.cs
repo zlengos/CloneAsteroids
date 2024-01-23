@@ -24,7 +24,8 @@ namespace Game.Views
             OnSpawned?.Invoke(entity, TempView);
         }
 
-        public void Destroy(Views.View view) => UnityEngine.Object.Destroy(view.gameObject);
+        public void Destroy(Views.View view) 
+            => UnityEngine.Object.Destroy(view.gameObject);
 
         protected abstract Views.View GetView(T model);
 

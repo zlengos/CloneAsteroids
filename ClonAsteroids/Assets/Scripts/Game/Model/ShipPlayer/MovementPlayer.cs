@@ -18,7 +18,8 @@ namespace Game.Model.ShipPlayer
             _ship = ship;
         }
 
-        public void Move(Vector2 delta) => _ship.MoveLooped(delta);
+        public void Move(Vector2 delta) 
+            => _ship.MoveLooped(delta);
 
         public void Rotate(float direction, float deltaTime) 
         {

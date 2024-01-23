@@ -35,7 +35,5 @@ namespace Game.Views
                 _ => throw new InvalidOperationException()
             };
         }
-
-
     }
 }

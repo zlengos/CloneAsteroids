@@ -24,7 +24,8 @@ namespace Game.Model.Enemies
             LookAt(_targetMvModel.Position);
         }
         
-        private void LookAt(Vector2 targetPosition) => Rotate(
+        private void LookAt(Vector2 targetPosition) 
+            => Rotate(
             Vector2.SignedAngle(Quaternion.Euler(0, 0, Rotation) * Vector3.up,
             Position - targetPosition));
     }

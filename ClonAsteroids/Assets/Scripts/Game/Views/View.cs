@@ -12,9 +12,11 @@ namespace Game.Views
 
         #endregion
         
-        private void Awake() => _camera = Camera.main;
+        private void Awake() 
+            => _camera = Camera.main;
 
-        public void Initialize(MVModel model) => Model = model;
+        public void Initialize(MVModel model) 
+            => Model = model;
         
         private void Update()
         {

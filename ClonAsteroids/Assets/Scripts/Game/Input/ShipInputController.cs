@@ -27,27 +27,21 @@ namespace Game.Input
         public ShipInputController(MovementPlayer shipMovement, MVModel ship)
         {
             _input = new ShipInputActions();
-            
             _inertia = new Inertia();
-            
             _movement = shipMovement;
         }
 
         public void OnEnable()
         {
             _input.Enable();
-            
             _input.Ship.BulletFire.performed += OnFirstGunShoot;
-            
             _input.Ship.LaserFire.performed += OnSecondGunShoot;
         }
 
         public void OnDisable()
         {
             _input.Disable();
-            
             _input.Ship.BulletFire.performed -= OnFirstGunShoot;
-            
             _input.Ship.LaserFire.performed -= OnSecondGunShoot;
         }
 
@@ -79,9 +73,11 @@ namespace Game.Input
             return _input.Ship.MoveForward.phase == InputActionPhase.Performed;
         }
 
-        private void OnFirstGunShoot(InputAction.CallbackContext obj) => TryShoot(_firstGun);
+        private void OnFirstGunShoot(InputAction.CallbackContext obj) 
+            => TryShoot(_firstGun);
 
-        private void OnSecondGunShoot(InputAction.CallbackContext obj) => TryShoot(_secondGun);
+        private void OnSecondGunShoot(InputAction.CallbackContext obj) 
+            => TryShoot(_secondGun);
 
         private void TryShoot(Gun gun)
         {

@@ -20,6 +20,7 @@ namespace Game.Model
             Acceleration = Vector2.ClampMagnitude(Acceleration, MaxSpeed);
         }
 
-        public void Slowdown(float deltaTime) => Acceleration -= Acceleration * (deltaTime / SecondsUnilStop);
+        public void Slowdown(float deltaTime) 
+            => Acceleration -= Acceleration * (deltaTime / SecondsUnilStop);
     }
 }

@@ -18,8 +18,10 @@ namespace Game.Model.Abstract
             Rotation = rotation;
         }
 
-        public void SetPosition(Vector2 newPosition) => Position = newPosition;
+        public void SetPosition(Vector2 newPosition) 
+            => Position = newPosition;
 
-        public void Rotate(float delta) => Rotation = Mathf.Repeat(Rotation + delta, 360);
+        public void Rotate(float delta) 
+            => Rotation = Mathf.Repeat(Rotation + delta, 360);
     }
 }
